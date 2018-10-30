@@ -1,0 +1,27 @@
+<h2>
+  {{ title }}
+</h2>
+
+<div>
+  {favourites, plural,
+    =0 {no favourite}
+    =1 {1 favourite}
+    other {{{favourites}} favourites}
+    }
+</div>
+<ng-template #loading>
+<h2> Loading products ....</h2>
+</ng-template>
+
+<ul class="products" *ngIf="products$ | async as products;else loading">
+  <li *ngFor="let product of products"
+    (click)="onSelect(product)"
+    [class.discontinued]="product.discontinued"
+        this.selectedProduct = product;
+    [class.selected]="selectedProduct === product">
+    <span class = "name">{{ product.name | uppercase}}</span>
+    <span class = "description">{{ product.description }}</span>
+    <span class = "price">{{ product.price | currency: 'CAD' : 'symbol-narrow' : '.2'}}</span>
+  </li>
+</ul>
+<app-product-detail [product]="selectedProduct"></app-product-detail>
